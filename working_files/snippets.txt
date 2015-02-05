@@ -1,0 +1,44 @@
+function getNames(){
+
+  // get the value from the input field	
+  var inputNameValue = $inputName.val();
+  // create a regular expression which will
+  // be used to search against data file
+  var test = new RegExp(inputNameValue, 'i');
+  console.log(inputNameValue);
+  
+  // get the JSON data	
+  $.getJSON('data/people.json', function(data){
+	  console.log(data);
+	  // set the output variable
+	  var output = '';
+	  // loop through the JSON data
+	  $.each(data, function(key, value){
+		  // test the name to see if it 
+		  // matches what was entered
+		  // into the input field
+		  // if it does than output
+		  // the data
+		  if(value.name.search(test) != -1) {
+			output += '<div class="person">';
+			output += '<div class="picture">';
+			output += '<img src="' + value.picture + '" alt="profile picture of ' + value.name + '">';
+			output += '</div><!-- end picture -->';
+			output += '<div class="info">';
+			output += '<ul>';
+			output += '<li><b>Name:</b>' + ' ' + value.name + '</li>';
+			output += '<li><b>Company:</b>' + ' ' + value.company + '</li>';
+			output += '<li><b>Email:</b>' + ' ' + '<a href="mailto:' + value.email + '">' + value.email + '</a></li>'; 
+			output += '</ul>';
+			output += '<h2>About:</h2>';
+			output += '<p>' + value.about + '</p>';
+			output += '</div><!-- end info -->';
+			output += '</div><!-- end person -->';
+		  }
+	  }) // end each loop through data
+	  // output the data to the
+	  // web page
+	  $people.html(output);
+  }) // end getJSON
+		
+} // end getNames function
